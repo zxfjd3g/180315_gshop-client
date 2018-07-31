@@ -142,6 +142,10 @@
       ...mapState(['address'])
     },
     mounted () {
+
+      // 请求后台获取shops
+      this.$store.dispatch('getShops')
+
       // 创建Swiper的实例对象, 实现轮播
       new Swiper('.swiper-container', {
         loop: true, // 循环轮播
