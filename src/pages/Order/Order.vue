@@ -24,6 +24,7 @@
 
   .order  //订单
     width 100%
+    overflow hidden
     .order_no_login
       padding-top 140px
       width 60%

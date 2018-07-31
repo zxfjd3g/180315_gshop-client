@@ -2,6 +2,7 @@
 发送ajax请求的函数模块
 函数的返回值是promise对象
  */
+import axios from 'axios'
 
 export default function ajax(url, data={}, type='GET') {
 
@@ -27,7 +28,7 @@ export default function ajax(url, data={}, type='GET') {
       promsie = axios.post(url, data)
     }
 
-    promsie.then(reponse => {
+    promsie.then(response => {
       // 请求成功
       resolve(response.data)
     }).catch(error => {

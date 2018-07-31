@@ -1,8 +1,9 @@
 <template>
   <section class="profile">
     <header-top title="我的"/>
-    <router-link class="profile-number" to="/login" tag="div">
-      <div class="profile-link">
+    <div class="profile-number">
+
+      <router-link class="profile-link" to="/login">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
@@ -18,8 +19,11 @@
         <span class="arrow">
               <i class="iconfont icon-jiantou1"></i>
             </span>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
+    <section >
+
+    </section>
     <section class="profile_info_data border-1px">
       <ul class="info_data_list">
         <a href="javascript:" class="info_data_link">
@@ -106,6 +110,7 @@
 
   .profile //我的
     width 100%
+    overflow hidden
     .profile-number
       margin-top 45.5px
       .profile-link
