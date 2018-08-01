@@ -40,7 +40,8 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
+                     @click="updateCaptcha">
               </section>
             </section>
           </div>
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+  import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
   export default {
     data () {
       return {
@@ -74,10 +76,9 @@
     },
 
     methods: {
-      sendCode () {
+      async sendCode () {
         if(this.isRightPhone) {
           //1.  倒计时
-
           // 指定总时间
           this.computeTime = 10
           // 启动循环定时器, 每隔1s减少1
@@ -89,12 +90,25 @@
               clearInterval(intervalId)
             }
           }, 1000)
-
-
-          //2. 向后台发ajax请求
-
+          //2. 向后台发ajax请求--> 发送获取验证码的请求
+          const result = await reqSendCode(this.phone)
+          if(result.code===0) {
+            // 显示一个自自动消失的文本小提示
+            alert('已发送')
+          } else {
+            // 显示一个警告框
+            alert(result.msg)
+            // 停止计时
+            this.computeTime = 0  // 前面判断的条件必须是<=
+          }
         }
 
+      },
+
+      // 获取更新显示新的图形验证码
+      updateCaptcha (event) {
+        // event.target.src = 'http://localhost:4000/captcha'   // 如果指定的新的src与原本的src一样, 不会重新请求
+        event.target.src = 'http://localhost:4000/captcha?time='+Date.now() // 参数本身后台不需要, 但有了这个变化的值, 浏览器就会自动发请求
       }
     }
   }
