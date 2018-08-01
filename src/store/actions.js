@@ -1,5 +1,14 @@
-import {RECEIVE_SHOPS, RECEIVE_CATEGORYS, RECEIVE_ADDRESS} from './mutation-types'
-import {reqAddress, reqCategorys, reqShops} from '../api'
+import {
+  RECEIVE_SHOPS,
+  RECEIVE_CATEGORYS,
+  RECEIVE_ADDRESS,
+  RECEIVE_USER
+} from './mutation-types'
+import {
+  reqAddress,
+  reqCategorys,
+  reqShops
+} from '../api'
 
 export default {
 
@@ -35,5 +44,10 @@ export default {
       const shops = result.data
       commit(RECEIVE_SHOPS, {shops})
     }
+  },
+
+  // 同步保存user
+  saveUser ({commit}, user) {
+    commit(RECEIVE_USER, {user})
   }
 }
