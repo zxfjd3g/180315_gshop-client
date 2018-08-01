@@ -58,3 +58,12 @@
         data: 自身的数据(内部改变)
         props: 外部传入的数据(外部改变)
         computed: 根据data/props/别的compute/state/getters
+        
+        
+# day02
+## 1. 异步显示分类轮播
+
+## 2. Star组件
+
+## 3. 登陆/注册功能
+
