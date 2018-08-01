@@ -4,16 +4,19 @@
       <div class="login_header">
         <h2 class="login_logo">硅谷外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" class="on">短信登录</a>
-          <a href="javascript:;">密码登录</a>
+          <a href="javascript:;" :class="{on: loginWay}" @click="loginWay=true">短信登录</a>
+          <a href="javascript:;" :class="{on: !loginWay}" @click="loginWay=false">密码登录</a>
         </div>
       </div>
       <div class="login_content">
         <form>
-          <div class="on">
+          <div :class="{on: loginWay}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button :disabled="computeTime>0" class="get_verification"
+                      :class="{right_phone: isRightPhone}" @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)`: '获取验证码'}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -23,16 +26,16 @@
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
-          <div>
+          <div :class="{on: !loginWay}">
             <section>
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd?'text':'password'" maxlength="8" placeholder="密码" v-model="pwd">
+                <div class="switch_button" @click="isShowPwd=!isShowPwd" :class="isShowPwd?'on':'off'">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
@@ -53,7 +56,48 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    data () {
+      return {
+        loginWay: false, // true代表短信登陆, false代表密码登陆
+        phone: '', // 手机号
+        pwd: '', // 密码
+        computeTime: 0, // 倒计时剩余的时间
+        isShowPwd: true, // 是否显示密码
+      }
+    },
+
+    computed: {
+      isRightPhone () {
+        return /^1\d{10}$/.test(this.phone)
+      }
+    },
+
+    methods: {
+      sendCode () {
+        if(this.isRightPhone) {
+          //1.  倒计时
+
+          // 指定总时间
+          this.computeTime = 10
+          // 启动循环定时器, 每隔1s减少1
+          const intervalId = setInterval(() => {
+            this.computeTime--
+            // 当计时时间为0时清除定时器
+            if(this.computeTime<=0) {
+              this.computeTime = 0
+              clearInterval(intervalId)
+            }
+          }, 1000)
+
+
+          //2. 向后台发ajax请求
+
+        }
+
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -118,6 +162,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone
+                  color black
             .login_verification
               position relative
               margin-top 16px
@@ -146,7 +192,6 @@
                 &.on
                   background #02a774
                 >.switch_circle
-                //transform translateX(27px)
                   position absolute
                   top -1px
                   left -1px
@@ -157,6 +202,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
