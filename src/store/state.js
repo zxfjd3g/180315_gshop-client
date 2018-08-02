@@ -5,4 +5,7 @@ export default {
   categorys: [], // 分类数组
   shops: [], //商家数组
   user: {}, // 用户信息
+  goods: [],
+  ratings: [],
+  info: {}
 }
