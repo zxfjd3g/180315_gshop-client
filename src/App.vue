@@ -12,6 +12,7 @@
     mounted () {
       // 异步获取当前地址信息
       this.$store.dispatch('getAddress')
+      this.$store.dispatch('getUser')
     },
 
     components: {
