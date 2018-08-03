@@ -94,7 +94,7 @@ export default {
     // 调用接口请求函数从后台获取数据
     const result = await reqRatings()
     if(result.code===0) {
-      const ratings = result.data
+      const ratings = response.msg
       commit(RECEIVE_RATINGS, {ratings})
     }
   },
