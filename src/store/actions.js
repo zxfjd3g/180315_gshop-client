@@ -78,12 +78,14 @@ export default {
   },
 
   // 异步获取商品列表
-  async getGoods ({commit, state}) {
+  async getGoods ({commit, state}, cb) {
     // 调用接口请求函数从后台获取数据
     const result = await reqGoods()
     if(result.code===0) {
       const goods = result.data
       commit(RECEIVE_GOODS, {goods})
+      // 数据更新之后执行回调函数
+      cb && cb()
     }
   },
 
