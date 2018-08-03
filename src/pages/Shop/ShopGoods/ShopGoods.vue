@@ -4,14 +4,17 @@
       <div class="menu-wrapper">
         <ul>
           <!--current-->
-          <li class="menu-item" v-for="(good, index) in goods" :key="index" :class="{current: index===currentIndex}">
-            <img class="icon" :src="good.icon" v-if="good.icon">
-            <span class="text bottom-border-1px">{{good.name}}</span>
+          <li class="menu-item" v-for="(good, index) in goods" :key="index"
+              :class="{current: index===currentIndex}" @click="clickItem(index)">
+            <span class="text bottom-border-1px">
+              <img class="icon" :src="good.icon" v-if="good.icon">
+              {{good.name}}
+            </span>
           </li>
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="foodsUl">
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -57,12 +60,10 @@
       this.$store.dispatch('getGoods', () => {// goods状态数据更新了
         // 利用$nextTick()实现界面更新后再执行
         this.$nextTick(() => {
-          new BScroll('.menu-wrapper', {
 
-          })
-          new BScroll('.foods-wrapper', {
-
-          })
+          this._initTops()
+          // 初始化scroll
+          this._initScroll()
         })
       })
 
@@ -78,6 +79,59 @@
         // scrollY>=top && scrollY<nextTop
         return tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
   }
+    },
+
+    methods: {
+      // 统计分类<li>的top
+      _initTops () {
+        const tops = []
+        let top = 0
+        tops.push(top)
+        const lis = this.$refs.foodsUl.getElementsByClassName('food-list-hook')
+        // this.$refs.foodsUl.children
+        // 遍历lis
+        Array.prototype.slice.call(lis).forEach(li => {
+          // 累加高度到top上
+          top += li.clientHeight
+          // 保存到tops
+          tops.push(top)
+        })
+        // 更新tops状态
+        this.tops = tops
+      },
+
+      _initScroll () {
+        // 为左侧列表创建scroll对象
+        new BScroll('.menu-wrapper', {
+          click: true // 使用better-scroll派发点击事件
+        })
+        // 为右侧列表创建scroll对象
+        this.rightScroll = new BScroll('.foods-wrapper', {
+          probeType: 1,  // 只有手指触摸滑动(一定距离)
+          click: true
+        })
+
+        // better-scroll禁用了原生的dom事件, 所有事件都自定义实现
+        // 绑定scroll监听
+        this.rightScroll.on('scroll', ({x, y}) => {
+          console.log('scroll', x, y)
+          this.scrollY = Math.abs(y)
+        })
+        // 绑定scrollEnd监听
+        this.rightScroll.on('scrollEnd', ({x, y}) => {
+          console.log('scrollEnd', x, y)
+          this.scrollY = Math.abs(y)
+        })
+      },
+
+      clickItem (index) {
+        // 得到index对应的top
+        const top = this.tops[index]
+        // 立即更新scrollY
+        this.scrollY = top
+        // 右侧列表滚动top处
+        this.rightScroll.scrollTo(0, -top, 300)
+      }
     }
   }
 </script>

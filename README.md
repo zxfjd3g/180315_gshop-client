@@ -125,4 +125,7 @@
       3). 计算的逻辑
          scrollY>=top && scrollY<nextTop
     2. 点击左侧分类项, 右侧列表滑动到对应位置
+      1). 绑定点击监听
+      2). 通过rightScroll滚动到对应的位置
+      3). 立即更新scrollY
 
