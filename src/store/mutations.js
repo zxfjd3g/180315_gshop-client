@@ -49,12 +49,19 @@ export default {
       // 新添加一个count属性, 指定值为1
       // food.count = 1  // 新加的属性没有数据绑定, 界面不会更新
       Vue.set(food, 'count', 1)  // 这样添加的属性是有数据绑定, 界面就会更新
+
+      // 将food添加到cartFoods中
+      state.cartFoods.push(food)
     }
   },
 
   [DECREMENT_FOOD_COUNT] (state, {food}) {
     if(food.count) { // 当count>0才减1
       food.count--
+      // 当变为0时, 将food从cartFoods中移除
+      if(food.count===0) {
+        state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+      }
     }
 
   },

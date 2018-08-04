@@ -7,5 +7,6 @@ export default {
   user: {}, // 用户信息
   goods: [],
   ratings: [],
-  info: {}
+  info: {},
+  cartFoods: [], // 购物车中购物项数组
 }
