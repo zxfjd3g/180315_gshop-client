@@ -18,7 +18,8 @@
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
+                  :key="index" @click="showFood(food)">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -42,6 +43,7 @@
         </ul>
       </div>
     </div>
+    <Food :food="food" ref="food"/>
   </div>
 </template>
 
@@ -50,12 +52,14 @@
   import {mapState} from 'vuex'
   // import CartControl from 'components/CartControl/CartControl.vue'
   import CartControl from '../../../components/CartControl/CartControl.vue'
+  import Food from '../../../components/Food/Food.vue'
 
   export default {
     data () {
       return {
         scrollY: 0, // 右侧列表滚动的y坐标
         tops: [], // 右侧所有分类<li>的top组成的数组
+        food: {}, // 需要显示的当前food
       }
     },
 
@@ -149,11 +153,19 @@
         this.scrollY = top
         // 右侧列表滚动top处
         this.rightScroll.scrollTo(0, -top, 300)
+      },
+
+      showFood (food) {
+        // 更新food状态
+        this.food = food
+        // 显示food组件(父组件调用子组件的方法)
+        this.$refs.food.toggleShow()
       }
     },
 
     components: {
-      CartControl
+      CartControl,
+      Food
     }
   }
 </script>

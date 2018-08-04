@@ -92,22 +92,24 @@ export default {
   },
 
   // 异步获取评价列表
-  async getRatings ({commit, state}) {
+  async getRatings ({commit, state}, cb) {
     // 调用接口请求函数从后台获取数据
     const result = await reqRatings()
     if(result.code===0) {
-      const ratings = response.msg
+      const ratings = result.data
       commit(RECEIVE_RATINGS, {ratings})
+      cb && cb()
     }
   },
 
   // 异步获取商家信息
-  async getInfo ({commit, state}) {
+  async getInfo ({commit, state}, cb) {
     // 调用接口请求函数从后台获取数据
     const result = await reqInfo()
     if(result.code===0) {
       const info = result.data
       commit(RECEIVE_INFO, {info})
+      cb && cb()
     }
   },
 
