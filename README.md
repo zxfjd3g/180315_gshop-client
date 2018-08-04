@@ -158,3 +158,14 @@
         2). 通过rightScroll滚动到对应的位置
         3). 立即更新scrollY
 
+# day05
+## 1. CartControl组件
+
+## 2. ShopCart组件
+
+## 3. Food组件
+
+## 4. ShopRatings组件
+
+## 5. ShopInfo组件
+

@@ -2,7 +2,7 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
+        <ul ref="menuUl">
           <!--current-->
           <li class="menu-item" v-for="(good, index) in goods" :key="index"
               :class="{current: index===currentIndex}" @click="clickItem(index)">
@@ -33,7 +33,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <CartControl :food="food"/>
                   </div>
                 </div>
               </li>
@@ -48,6 +48,9 @@
 <script>
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  // import CartControl from 'components/CartControl/CartControl.vue'
+  import CartControl from '../../../components/CartControl/CartControl.vue'
+
   export default {
     data () {
       return {
@@ -77,7 +80,12 @@
       currentIndex () {
         const {scrollY, tops} = this
         // scrollY>=top && scrollY<nextTop
-        return tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+        // 得到当前分类的下标
+        const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+
+        this._scrollLeftList(index)
+
+        return index
   }
     },
 
@@ -102,7 +110,7 @@
 
       _initScroll () {
         // 为左侧列表创建scroll对象
-        new BScroll('.menu-wrapper', {
+        this.leftScroll = new BScroll('.menu-wrapper', {
           click: true // 使用better-scroll派发点击事件
         })
         // 为右侧列表创建scroll对象
@@ -124,6 +132,16 @@
         })
       },
 
+      // 滚动左侧列表到指定下标对应的位置
+      _scrollLeftList (index) {
+        if(this.leftScroll) {
+          // 得到当前分类的<li>
+          const li = this.$refs.menuUl.children[index]
+          // 左侧列表滚动到当前分类的Li上(尽量滚动到顶部, 至少保证在可见区域内显示)
+          this.leftScroll.scrollToElement(li, 300)
+        }
+      },
+
       clickItem (index) {
         // 得到index对应的top
         const top = this.tops[index]
@@ -132,6 +150,10 @@
         // 右侧列表滚动top处
         this.rightScroll.scrollTo(0, -top, 300)
       }
+    },
+
+    components: {
+      CartControl
     }
   }
 </script>
