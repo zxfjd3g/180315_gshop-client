@@ -26,11 +26,14 @@
 
       <Split/>
 
-      <div>RatingSelect组件</div>
+      <RatingFilter :selectRateType="selectRateType"
+                    :onlyContent="onlyContent"
+                    @setSelectRateType="setSelectRateType"
+                    @switchOnlyContent="switchOnlyContent"/>
 
       <div class="rating-wrapper">
         <ul>
-          <li class="rating-item" v-for="(rating, index) in ratings" :key="index">
+          <li class="rating-item" v-for="(rating, index) in filterRatings" :key="index">
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar">
             </div>
@@ -45,7 +48,7 @@
                 <span class="iconfont" :class="rating.rateType===0 ? 'icon-thumb_up' : 'icon-thumb_down'"></span>
                 <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{item}}</span>
               </div>
-              <div class="time">{{rating.rateTime}}</div>
+              <div class="time">{{rating.rateTime | date-format}}</div>
             </div>
           </li>
         </ul>
@@ -59,8 +62,16 @@
   import {mapState} from 'vuex'
 
   import Star from '../../../components/Star/Star.vue'
+  import RatingFilter from '../../../components/RatingFilter/RatingFilter.vue'
 
   export default {
+
+    data () {
+      return {
+        selectRateType: 2, // 0代表满意, 1代表不满意, 2代表全部
+        onlyContent: false, // 是否只显示有text内容
+      }
+    },
     mounted () {
       this.$store.dispatch('getRatings', () => {
         this.$nextTick(() => {
@@ -72,11 +83,49 @@
     },
 
     computed: {
-      ...mapState(['ratings', 'info'])
+      ...mapState(['ratings', 'info']),
+
+      // 过滤后的评价列表
+      filterRatings () {
+        // 取出相关数据
+        const {ratings, selectRateType, onlyContent} = this
+
+        // 返回过滤后的数组
+        return ratings.filter(rating => {
+          const {rateType, text} = rating
+          /*
+          条件1
+          selectRateType: 0/1/2
+          rateType: 0/1
+          selectRateType===2 || selectRateType===rateType
+           */
+          /*
+          条件2
+          onlyContent: true/false
+          text: 有值/没值
+          !onlyContent || text.length>0
+           */
+
+          return (selectRateType===2 || selectRateType===rateType) && (!onlyContent || text.length>0)
+        })
+
+      }
+    },
+
+    methods: {
+      // 设置selectRateType的新值
+      setSelectRateType (selectRateType) {
+        this.selectRateType = selectRateType
+      },
+
+      switchOnlyContent () {
+        this.onlyContent = !this.onlyContent
+      }
     },
 
     components: {
-      Star
+      Star,
+      RatingFilter
     }
   }
 </script>
@@ -86,11 +135,12 @@
 
   .ratings
     position: absolute
-    top: 210px
+    top: 225px
     bottom: 0
     left: 0
     width: 100%
     overflow: hidden
+    background: #fff
     .overview
       display: flex
       padding: 18px 0
@@ -215,3 +265,4 @@
             font-size: 10px
             color: rgb(147, 153, 159)
 </style>
+

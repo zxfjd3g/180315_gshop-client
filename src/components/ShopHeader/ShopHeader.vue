@@ -144,7 +144,7 @@
     .shop-nav
       background-size cover
       background-repeat no-repeat
-      height 45px
+      height 40px
       padding 5px 10px
       position relative
       &::before
@@ -166,7 +166,7 @@
           color: #fff
 
     .shop-content
-      padding 25px 20px 0
+      padding 30px 20px 5px 20px
       position relative
       display flex
       background #fff
@@ -261,7 +261,7 @@
       padding 5px 7px
       font-size 11px
       color #666
-      margin 0 30px 10px 20px
+      margin 0 30px
       align-items center
       .discounts-left
         flex 1
@@ -322,17 +322,13 @@
       z-index 52
       flex-direction column
       color #333
-      &.fade-enter-active, &.fade-leave-active
-        transition opacity .5s
-      &.fade-enter, &.fade-leave-to
-        opacity 0
       .brief-modal-cover
         position absolute
         width 100%
         height 100%
         top 0
         left 0
-        background-color rgba(0,0,0,.5)
+        background-color rgba(0, 0, 0, .5)
         z-index 1
 
       .brief-modal-content
@@ -353,7 +349,7 @@
           display flex
           align-items center
           justify-content center
-          >span
+          > span
             font-weight 600
           .content-tag
             border-radius 2px
@@ -379,15 +375,15 @@
         .brief-modal-msg
           display flex
           margin 20px -10px 0
-          >li
+          > li
             flex 1
             text-align center
-            >h3
+            > h3
               font-size 15px
               font-weight 600
               color #333
               margin-bottom 8px
-            >p
+            > p
               font-size 12px
               color #999
         .brief-modal-title
@@ -395,11 +391,11 @@
           text-align center
           margin 15px auto 15px
           width 85px
-          background-image linear-gradient(90deg,#fff,#333 50%,#fff)
+          background-image linear-gradient(90deg, #fff, #333 50%, #fff)
           background-size 100% 1px
           background-position 50%
           background-repeat no-repeat
-          >span
+          > span
             font-size 12px
             padding 0 6px
             color #999
@@ -415,12 +411,12 @@
           bottom -60px
           left 50%
           padding 6px
-          border 1px solid rgba(255,255,255,.7)
+          border 1px solid rgba(255, 255, 255, .7)
           border-radius 50%
           transform translateX(-50%)
           span
             font-size 16px
-            color rgba(255,255,255,.7)
+            color rgba(255, 255, 255, .7)
     .activity-sheet
       position fixed
       top 0
@@ -507,3 +503,4 @@
         background-color rgba(0, 0, 0, .5)
 
 </style>
+

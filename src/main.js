@@ -6,6 +6,7 @@ import store from './store'
 import Split from './components/Split/Split.vue'
 
 import './mock/mockServer'
+import './filters'  // 加载自过滤器
 
 // 注册全局组件标签
 Vue.component(Button.name, Button)

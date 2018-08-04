@@ -23,7 +23,7 @@
 
   export default {
 
-    mounted () {
+    mounted() {
       this.$store.dispatch('getInfo')
     },
 
@@ -38,6 +38,7 @@
   .tab
     height 40px
     line-height 40px
+    background #fff
     bottom-border-1px(rgba(7, 17, 27, 0.1))
     .tab-item
       float left
@@ -47,6 +48,16 @@
       color rgb(77, 85, 93)
       a
         display block
+        position relative
         &.router-link-active
           color #02a774
+          &::after
+            content ''
+            position absolute
+            left 50%
+            bottom 1px
+            width 35px
+            height 2px
+            transform translateX(-50%)
+            background #02a774
 </style>
