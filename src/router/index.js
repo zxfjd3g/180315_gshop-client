@@ -4,10 +4,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Msite from '../pages/Msite/Msite.vue'
+// 使用import()引入模块, webpack会对组件进行拆分(单独)打包(code split)
+const Msite = () => import('../pages/Msite/Msite.vue')
+const Profile = () => import('../pages/Profile/Profile.vue')
+const Search = () => import('../pages/Search/Search.vue')
+const Order = () => import('../pages/Order/Order.vue')
+
+/*import Msite from '../pages/Msite/Msite.vue'
 import Profile from '../pages/Profile/Profile.vue'
 import Search from '../pages/Search/Search.vue'
-import Order from '../pages/Order/Order.vue'
+import Order from '../pages/Order/Order.vue'*/
 import Login from '../pages/Login/Login.vue'
 
 import Shop from '../pages/Shop/Shop.vue'
@@ -23,7 +29,7 @@ const router = new VueRouter({ // 配置对象
   routes: [
     {
       path: '/msite',
-      component: Msite,
+      component: Msite, // 返回组件的函数, 需要时才执行从后台请求获取对应的打包文件
       meta: {
         showFoot: true
       }
