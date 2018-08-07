@@ -21,6 +21,11 @@ import ShopGoods from '../pages/Shop/ShopGoods/ShopGoods.vue'
 import ShopRatings from '../pages/Shop/ShopRatings/ShopRatings.vue'
 import ShopInfo from '../pages/Shop/ShopInfo/ShopInfo.vue'
 
+import a from '../pages/test/a.vue'
+import b from '../pages/test/b.vue'
+import b1 from '../pages/test/b1.vue'
+import b2 from '../pages/test/b2.vue'
+
 // 声明使用插件
 Vue.use(VueRouter)
 
@@ -86,12 +91,36 @@ const router = new VueRouter({ // 配置对象
       path: '/',
       redirect: '/msite'
     },
+
+    {
+      path: '/a',
+      component: a
+    },
+    {
+      path: '/b',
+      component: b,
+      children: [
+        {
+          path: '/b/b1',
+          component: b1
+        },
+        {
+          path: '/b/b2',
+          component: b2
+        },
+      ]
+    },
   ]
 })
 
-/*router.beforeEach((to, from, next) => {
-  console.log('beforeEach', to, from, next)
-  next()
-})*/
+router.beforeEach((to, from, next) => {
+  console.log('beforeEach', to, from, Vue.$store)
+  const userid = Vue.$store.state.user._id
+  const {path} = to
+  if(!userid && (path==='/a' || path==='/b')) {
+    return next('/login') // 自动跳转到登陆
+  }
+  next()  // 放行
+})
 
 export default router

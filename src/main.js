@@ -20,7 +20,7 @@ Vue.use(VueLazyload, { // 内部会定义一个全局的指令lazy
 Vue.component(Button.name, Button)
 Vue.component('Split', Split)
 
-
+Vue.$store = store
 /* eslint-disable  */
 new Vue({
   el: '#app',

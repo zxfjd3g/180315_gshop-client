@@ -173,14 +173,14 @@
       }
     },
 
-    /*beforeRouteEnter (to, from, next) {
-      next(vm => {
+    // 组件的前置守卫
+    beforeRouteEnter (to, from, next) {
+      next(vm => {// vm是当前组件对象
         if(vm.$store.state.user._id) {
-          next('/profile')
+          next(from.path || '/profile')
         }
       })
-
-    }*/
+    }
   }
 </script>
 

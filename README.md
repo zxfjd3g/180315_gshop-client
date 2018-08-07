@@ -198,4 +198,12 @@
     4). 自定义日期过滤器
 
 ## 5. ShopInfo组件
+    1). 通过原生DOM操作元素样式
+    2). 解决在当前路由上刷新异常的bug
+    
+## 6. 项目优化
+    1). 缓存路由组件: <keep-alive>
+    2). 路由懒加载: const Home = () => import('./Home.vue')
+    3). 图片懒加载: vue-lazyload
+
 
